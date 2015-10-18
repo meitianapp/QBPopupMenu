@@ -104,7 +104,7 @@ static const NSTimeInterval kQBPopupMenuAnimationDuration = 0.2;
     if ([self isVisible]) {
         return;
     }
-    
+    self.visible = YES;
     self.view = view;
     self.targetRect = targetRect;
     
@@ -172,15 +172,14 @@ static const NSTimeInterval kQBPopupMenuAnimationDuration = 0.2;
     
     // Show
     [view addSubview:self.overlayView];
-    
+
     if (animated) {
-        self.alpha = 0;
+        self.overlayView.alpha = 0;
         [self.overlayView addSubview:self];
         
-        [UIView animateWithDuration:kQBPopupMenuAnimationDuration animations:^(void) {
-            self.alpha = 1.0;
+        [UIView animateWithDuration:kQBPopupMenuAnimationDuration delay:0.f options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+            self.overlayView.alpha = 1.0;
         } completion:^(BOOL finished) {
-            self.visible = YES;
             
             // Delegate
             if (self.delegate && [self.delegate respondsToSelector:@selector(popupMenuDidAppear:)]) {
@@ -189,8 +188,6 @@ static const NSTimeInterval kQBPopupMenuAnimationDuration = 0.2;
         }];
     } else {
         [self.overlayView addSubview:self];
-        
-        self.visible = YES;
         
         // Delegate
         if (self.delegate && [self.delegate respondsToSelector:@selector(popupMenuDidAppear:)]) {
@@ -211,8 +208,8 @@ static const NSTimeInterval kQBPopupMenuAnimationDuration = 0.2;
     }
     
     if (animated) {
-        [UIView animateWithDuration:kQBPopupMenuAnimationDuration animations:^{
-            self.alpha = 0;
+        [UIView animateWithDuration:kQBPopupMenuAnimationDuration delay:0.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.overlayView.alpha = 0;
         } completion:^(BOOL finished) {
             [self removeFromSuperview];
             [self.overlayView removeFromSuperview];
@@ -806,13 +803,6 @@ static const NSTimeInterval kQBPopupMenuAnimationDuration = 0.2;
         
         CGPathRelease(path);
     } CGContextRestoreGState(context);
-    
-    // Separator
-    if (direction == QBPopupMenuArrowDirectionDown || direction == QBPopupMenuArrowDirectionUp) {
-        for (QBPopupMenuItemView *itemView in self.visibleItemViews) {
-            [self drawSeparatorInRect:CGRectMake(itemView.frame.origin.x + itemView.frame.size.width - 1, rect.origin.y, 1, rect.size.height)];
-        }
-    }
 }
 
 - (void)drawHeadInRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius highlighted:(BOOL)highlighted

@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak, readonly) id target;
 @property (nonatomic, assign, readonly) SEL action;
+@property (nonatomic, weak, readonly) id obj;
 
 @property (nonatomic, copy, readonly) NSString *title;
 @property (nonatomic, copy, readonly) UIImage *image;
@@ -23,5 +24,13 @@
 - (instancetype)initWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 - (instancetype)initWithImage:(UIImage *)image target:(id)target action:(SEL)action;
 - (instancetype)initWithTitle:(NSString *)title image:(UIImage *)image target:(id)target action:(SEL)action;
+
++ (instancetype)itemWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)obj;
++ (instancetype)itemWithImage:(UIImage *)image target:(id)target action:(SEL)action withObject:(id)obj;
++ (instancetype)itemWithTitle:(NSString *)title image:(UIImage *)image target:(id)target action:(SEL)action withObject:(id)obj;
+
+- (instancetype)initWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)obj;
+- (instancetype)initWithImage:(UIImage *)image target:(id)target action:(SEL)action withObject:(id)obj;
+- (instancetype)initWithTitle:(NSString *)title image:(UIImage *)image target:(id)target action:(SEL)action withObject:(id)obj;
 
 @end
